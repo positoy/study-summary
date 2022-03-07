@@ -127,3 +127,20 @@ Flux.just(1, 2, 3, 4)
   .subscribeOn(Schedulers.parallel())
   .subscribe(elements::add);
 ```
+
+
+#### Mono
+```java
+Mono<Integer> mono = Mono.just(1);
+
+// blocking way
+System.out.println(mono.block());
+
+// non-blocking way
+mono.subscribe(System.out::println);
+
+// intermediate step non-blocking way
+mono.doOnNext(System.out::println)
+        .map(item -> item * 2)
+        .subscribe(System.out::println);
+```
