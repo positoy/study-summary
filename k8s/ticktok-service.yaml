@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticktok
+spec:
+  selector:
+    matchLabels:
+      app: ticktok
+  template:
+    metadata:
+      labels:
+        app: ticktok
+    spec:
+      containers:
+        - name: ticktok
+          image: reg.navercorp.com/navertalk/ticktok
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: html
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: html
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: html
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticktok
+spec:
+  selector:
+    app: ticktok
+  ports:
+    - port: 80
+      targetPort: 80

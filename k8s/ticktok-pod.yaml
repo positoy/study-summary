@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ticktok
+  labels:
+    name: ticktok
+spec:
+  containers:
+    - name: ticktok
+      image: reg.navercorp.com/navertalk/ticktok
+      imagePullPolicy: Always
+      volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: html
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: html
+      ports:
+        - containerPort: 80
+  imagePullSecrets:
+    - name: regcred
+  volumes:
+    - name: html
+      emptyDir: {}
