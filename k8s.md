@@ -1,5 +1,30 @@
 # Docker
 
+## minikube
+- docker destop 은 유료화 되었지만, docker cli 에 minikube 로 구성된 k8s 클러스트 내부의 docker daemon 을 연결하면 기존처럼 사용가능하다.
+- https://dhwaneetbhatt.com/blog/run-docker-without-docker-desktop-on-macos
+  ```bash
+  # Install hyperkit and minikube
+  brew install hyperkit
+  brew install minikube
+  
+  # Install Docker CLI
+  brew install docker
+  brew install docker-compose
+  
+  # Start minikube
+  minikube start
+  
+  # Tell Docker CLI to talk to minikube's VM
+  eval $(minikube docker-env)
+  
+  # Save IP to a hostname
+  echo "`minikube ip` docker.local" | sudo tee -a /etc/hosts > /dev/null
+  
+  # Test
+  docker run hello-world
+  ```
+
 ## kafka
 
 ```bash
