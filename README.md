@@ -7,6 +7,7 @@
 - scala functional programming
 
 ### Data
+- [ ] [Master Hibernate and JPA with Spring Boot in 100 Steps](https://www.udemy.com/course/hibernate-jpa-tutorial-for-beginners-in-100-steps/) (udemy, 14h, $20)
 - [ ] [SQL](https://www.udacity.com/course/learn-sql--nd072) (Udacity, 80h, $300)
 - [ ] [Data Streaming](https://www.udacity.com/course/data-streaming-nanodegree--nd029) (Udacity, 80h, $300)
 - [ ] [Data Visualization](https://www.udacity.com/course/data-visualization-nanodegree--nd197) (Udacity, 160h, $600)
