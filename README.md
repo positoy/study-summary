@@ -1,5 +1,11 @@
 # study-summary
 
+### Programming
+- effective java
+- reactive
+- spring
+- scala functional programming
+
 ### Data
 - [ ] [SQL](https://www.udacity.com/course/learn-sql--nd072) (Udacity, 80h, $300)
 - [ ] [Data Streaming](https://www.udacity.com/course/data-streaming-nanodegree--nd029) (Udacity, 80h, $300)
