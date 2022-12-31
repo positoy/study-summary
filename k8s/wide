@@ -1,0 +1,9 @@
+--2022-05-27 09:48:28--  http://kubectl/
+kubectl (kubectl) 해석 중... 실패: nodename nor servname provided, or not known.
+wget: `kubectl' 호스트 주소를 해석할 수 없습니다
+--2022-05-27 09:48:28--  http://get/
+get (get) 해석 중... 실패: nodename nor servname provided, or not known.
+wget: `get' 호스트 주소를 해석할 수 없습니다
+--2022-05-27 09:48:28--  http://pod/
+pod (pod) 해석 중... 실패: nodename nor servname provided, or not known.
+wget: `pod' 호스트 주소를 해석할 수 없습니다

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-deploy2
+  template:
+    metadata:
+      labels:
+        app: web-deploy2
+    spec:
+      containers:
+        - name: web-deploy2
+          image: nginx:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-deploy2
+spec:
+  selector:
+    app: web-deploy2
+  ports:
+    - port: 8080
+      targetPort: 80

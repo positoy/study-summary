@@ -1,8 +1,4 @@
-# 스프링
-
-톡톡 프로젝트들은 Oracle Java8, 톰캣 8.5 환경에서 실행 권장
-
-## [인프런 웹-MVC](https://www.infleaarn.com/course/%EC%9B%B9-mvc)
+# [스프링-MVC](https://www.infleaarn.com/course/%EC%9B%B9-mvc)
 
 ### 스프링 MVC 동작원리
 
@@ -1246,9 +1242,130 @@ class EventController {
           return ResponseEntity.badRequest().build();
         }
       
-        return ResponseEntity.ok().body(person).build();
+        return ResponseEntity.ok().body(person);
+      }
+      ```
+
+      
+    
+22. @ModelAttribute 의 또 다른 사용 방법
+
+    1. @RequestMapping을 사용한 핸들러 메소드의 아규먼트에 사용
+
+    2. @Controller 또는 @ControllerAdvice 를 사용한 클래스에서 모델 정보를 초기화 할 때 사용
+
+       - handler 의 내용이 간단해짐
+
+       ```java
+       @ModelAttribute("types")
+       public Collection<PetType> populatePetTypes() {
+         return this.pets.findPetTypes();
+       }
+       
+       @ModelAttribute("owner")
+       public Owner findOwner(@PathVariable("ownerId") int ownerId) {
+         return this.owners.findById(ownerId);
+       }
+       
+       @GetMapping("/pets/new")
+       public String initCreationForm(Owner owner, ModelMap model) {
+       //  owner = owners.findById(ownerId);
+         Pet pet = new Pet();
+         owner.addPet(pet);
+         model.put("pet", pet);
+         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+       }
+       ```
+
+    3. @RequestMapping과 같이 사용하면 해당 메소드에서 리턴하는 객체를 모델에 넣어줌
+
+       - 원래 반환하던 view는 URL의 경로명이 대신함 (RequestToViewNameTranslator)
+
+       ```java
+       @RequestMapping(value="/pets/new", method=HTTPMethod.GET)
+       @ModelAttribute
+       public Owner initCreationForm(int ownerId) {
+         Owner owner = owners.findById(onwerId);
+         owner.add(new Pet());
+         return owner;
+       }
+       ```
+
+       
+
+23. @InitBinder
+
+    - Controller 에 들어오는 요청에 대하여 binding/formatting/validation 을 적용
+      - webDataBinder.setDisallowedFields("id")
+      - webDataBinder.addCustomFormatter()
+      - webDataBinder.addValidators()
+
+    ```java
+    @InitBinder
+    public void initEventBinder(WebDataBinder webDataBinder) {
+      webDataBinder.setDisallowedFields("id");
+      
+    }
+    ```
+
+    - InitBinder("event") 처럼 이름을 넣는 경우, 해당 어트리뷰트에 대해서만 적용
+      
+
+24. 예외처리핸들러 @ExceptionHandler
+
+    - exception 발생시 가장 구체적인 에러가 매칭되어 처리됨
+
+      ```java
+      
+      
+      @ExceptionHandler
+      public String runtimeErrorHandler(RuntimeException exception, Model model) {
+        model.addAttribute("message", "runtime error");
+        return "error";
+      }
+      
+      @ExceptionHandler({EventException.class, RuntimeException.class})
+      public String errorHandler(Exception exception, Model model) {
+        model.addAttribute("message", "event error");
+        return "error";
+      }
+      ```
+
+    - 여러 에러 타입을 동시에 처리 가능
+
+    - Rest API 의 경우에는 ResponseEntity로 status 와 함께 응답
+
+      ```java
+      @ExceptionHandler
+      public ResponseEntity eventErrorHandler(EventException exception, Model model) {
+        return ResponseEntity.badRequest().body("can't create event with given request.");
       }
       ```
 
       
 
+25. 전역컨트롤러 @(Rest)ControllerAdvice
+
+    - 아래 3가지는 컨트롤러 내부에서 동작
+
+      - @ExceptionHandler
+      - @InitBinder
+      - @ModelAttribute
+
+    - @(Rest)ControllerAdvice 적용된 컨트롤러에 사용하면 복수의 컨트롤러에 공통 적용
+
+      - 모든 컨트롤러 (기본값)
+
+      - 일부 컨트롤러
+
+        ```java
+        @ControllerAdvice(assignableTypes = {EventController.class, ApiController.class})
+        public class BaseController {
+          @ExceptionHandler
+          public ResponseEntity runtimeErrorHandler(RuntimeException exception) {
+            return ResponseEntity.badRequest().body("bad request");
+          }
+        }
+        ```
+
+        
