@@ -48,4 +48,11 @@ WantedBy=multi-user.target
 }
 ```
 
+# portproxy
+- [Accessing network applications with WSL](https://learn.microsoft.com/en-us/windows/wsl/networking)
 
+  ```bash
+  netsh interface portproxy add v4tov4 listenport=22 listenaddress=0.0.0.0 connectport=22 connectaddress=(wsl hostname -I)
+  netsh interface portproxy add v4tov4 listenport=8888 listenaddress=0.0.0.0 connectport=8888 connectaddress=(wsl hostname -I)
+  ```
+- firewall in/outbound port rule
